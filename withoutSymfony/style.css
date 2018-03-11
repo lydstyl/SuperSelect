@@ -1,0 +1,13 @@
+.btn.btn-outline-primary{
+    margin-bottom: 8px;
+}
+table.table-striped thead{
+    background: lightgray;
+}
+table.table-striped tbody tr:nth-of-type(odd), select.form-control{
+    background: #d5eaff;
+}
+td a {
+    margin: 0 6px;
+    color: black;
+}

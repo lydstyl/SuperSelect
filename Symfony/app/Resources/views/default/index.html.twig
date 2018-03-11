@@ -1,0 +1,228 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <div class="py-5 text-center">
+        <h1>Exercice SuperSelect suite à notre entretien</h1>
+        <p>
+            Bonjour Abdel et Pascal, voici le résultat de mon travail.<br> 
+            Il reste quelques bugs ainsi que des tonnes d'améliorations possibles que je n'ai pas traités par manque de temps.<br>
+            Pour travailler, je suis obligé de m'enfermer à clé et mon fils essaye d'ouvrir la porte et pleur pour me voir ce qui est assez perturbant... <br>
+            J'ose imaginer toutefois que cela sera suffisant pour vous rassurer.<br>
+            J'attends votre retour, qu'en pensez-vous ?<br>
+            Gabriel
+        </p>
+    </div>
+    <p>À faire de plus important :</p>
+    <ul>
+        <li>débuger l'action ajouter</li>
+    </ul>
+    <p>J'ai pensais qu'il serait bien :</p>
+    <ul>
+        <li>d'ajouter une validation avec des regex + un trim pour l'action d'édition d'une option</li>
+        <li>de résoudre tous les bugs</li>
+        <li>d'ajouter une feature qui empèche l'apparition de doublons</li>
+        <li>d'ajouter un viewport</li>
+        <li>d'améliorer le CSS pour le rendre plus responsive et plus joli</li>
+    </ul>
+    <hr>
+    <div class="row">
+        <div id="mySuperSelect" class="col-md-12">
+            <h2>SELECT</h2>
+            <form>
+                <label id="selectLabel" for="exampleFormControlSelect1">Aperçu du select</label>
+                <hr>
+                <p>Options</p>
+                <a id="addAction" class="btn btn-outline-primary" href="#" role="button">Ajouter</a>
+                <div id="editValues" class="row">
+                    <div class="col-sm-12 col-md-4 mb-3">
+                        <label for="optionValue">Value de votre option</label>
+                        <input type="text" class="form-control" id="optionValue" placeholder="" value="" required="">
+                        <div class="invalid-feedback">
+                            Valid Option value is required.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="optionText">Texte de votre option</label>
+                        <input type="text" class="form-control" id="optionText" placeholder="" value="" required="">
+                        <div class="invalid-feedback">
+                            Valid Option text is required.
+                        </div>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label for="ok">Et validez</label>
+                        <input type="submit" class="form-control" id="ok" value="ok" required="">
+                        <div class="invalid-feedback">
+                            Valid Option text is required.
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">value</th>
+                        <th scope="col">texte</th>
+                        <th scope="col">selected</th>
+                        <th scope="col">actions</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .btn.btn-outline-primary{
+        margin-bottom: 8px;
+    }
+    table.table-striped thead{
+        background: lightgray;
+    }
+    table.table-striped tbody tr:nth-of-type(odd), select.form-control{
+        background: #d5eaff;
+    }
+    td a {
+        margin: 0 6px;
+        color: black;
+    }
+</style>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    /* SuperSelect is the class */
+    function SuperSelect(selector) {
+        this.selector = selector;
+        this.options = [
+            {value: 'A', textNode: 'texte A'},
+            {value: 'B', textNode: 'texte B'},
+            {value: 'C', textNode: 'texte C', selected: true},
+            {value: 'D', textNode: 'texte D'}
+        ];
+        this.refresh();
+    }
+    SuperSelect.prototype.init = function() {
+        // we can add here the feature removeDuplicates but let KISS (keep it super simple)
+        this.addSelectAndTbody();
+        $('tbody tr:first-child a:nth-child(3)').hide();
+        $('tbody tr:last-child a:nth-child(4)').hide();
+        this.addListeners();
+    }
+    SuperSelect.prototype.destroy = function() {
+        $(self.selector + ' #addAction').off( "click" );
+        $(this.selector + ' select').remove();
+        $(this.selector + ' tbody').remove();
+    }
+    SuperSelect.prototype.refresh = function() {
+        this.destroy();
+        this.init();
+    }
+    SuperSelect.prototype.addSelectAndTbody = function() {
+        $('#editValues').hide(); // hide the inputs for editing an option
+        var mySelect = '<select class="form-control" id="exampleFormControlSelect1">';
+        var myTbody = '<tbody>';
+        this.options.forEach(function (option) {
+            mySelect += '<option ';
+            if (option.selected) mySelect += 'selected="selected" ';
+            mySelect += 'value="' + option.value;
+            mySelect += '">' + option.textNode + '</option>';
+            myTbody += '<tr>';
+            myTbody += '<th scope="row">' + option.value + '</th>';
+            myTbody += '<td>' + option.textNode + '</td>';
+            myTbody += 'value="' + option.value;
+            myTbody += '">' + option.textNode + '</option>';
+            myTbody += '<td><input type="radio" name="' + option.value + '"';
+            if (option.selected) myTbody += ' checked';
+            myTbody += '></td>';
+            myTbody += '<td><a href=""><i class="fas fa-trash"></i></a><a href=""><i class="fas fa-edit"></i></a>';
+            myTbody += '<a href=""><i class="fas fa-chevron-up"></i></a><a href="">'; 
+            myTbody += '<i class="fas fa-chevron-down"></i></a></td>';
+            myTbody += '</tr>';
+        });
+        mySelect += '</select>';
+        myTbody += '</tbody>';
+        $(mySelect).insertAfter(this.selector + ' #selectLabel');
+        $(myTbody).insertAfter(this.selector + ' thead');
+    }
+    SuperSelect.prototype.addListeners = function() {
+        var self = this; 
+        // add button
+        $(self.selector + ' #addAction').one('click', function(event) {
+            event.preventDefault();
+            self.addOption();
+        });
+        // selected option
+        $(self.selector + ' tbody [type=radio]').one('click', function(event) {
+            var index = $(self.selector + ' tbody [type=radio]').index($(event.target));
+            self.options.forEach(function (option) {
+                option.selected = false;
+            })
+            self.options[index].selected = true;
+            self.refresh();
+        });
+        // all links in the table
+        $(self.selector + ' tbody a').one('click', function(event) {
+            event.preventDefault();
+        });
+            // remove action
+        $(self.selector + ' tbody a:nth-child(1)').one('click', function(event) {
+            var index = $(self.selector + ' tbody tr').index($(this).parent().parent());
+            self.removeOption(index);
+        });
+            // edit action
+        $(self.selector + ' tbody a:nth-child(2)').one('click', function(event) {
+            var index = $(self.selector + ' tbody tr').index($(this).parent().parent());
+            $('#ok').data({'index': index});
+            $('#optionValue').val(self.options[index].value);
+            $('#optionText').val(self.options[index].textNode);
+            $('#editValues').slideDown();
+        });
+                // value and text node inputs
+        $(self.selector + ' #ok').one('click', function(event) {
+            event.preventDefault();
+            var index = $('#ok').data().index;
+            var optionValue = $('#optionValue').val();
+            var optionText = $('#optionText').val();
+            self.editOption(index, optionValue, optionText);
+            self.refresh();
+        });
+            // move up action
+        $(self.selector + ' tbody a:nth-child(3)').one('click', function(event) {
+            var index = $(self.selector + ' tbody tr').index($(this).parent().parent());
+            self.moveOption(index, true);
+            self.refresh();
+        });
+            // move down action
+        $(self.selector + ' tbody a:nth-child(4)').one('click', function(event) {
+            var index = $(self.selector + ' tbody tr').index($(this).parent().parent());
+            self.moveOption(index);
+            self.refresh();
+        });
+    }
+    SuperSelect.prototype.addOption = function() {
+        var len = this.options.length;
+        this.options.push({value: 'new' + len, textNode: 'nouveau texte ' + len});
+        this.refresh();
+    }
+    SuperSelect.prototype.editOption = function(optionIndex, newValue, newText) {
+        var newOption = {value: newValue, textNode: newText};
+        this.options[optionIndex] = newOption;
+        this.refresh();
+    }
+    SuperSelect.prototype.removeOption = function(optionIndex) {
+        this.options.splice(optionIndex, 1);
+        this.refresh();
+    }
+    SuperSelect.prototype.moveOption = function(optionIndex, up) {
+        up == true ? destinationIndex = optionIndex - 1 : destinationIndex = optionIndex + 1;
+        var destinationActualOption = this.options[destinationIndex];
+        this.options[destinationIndex] = this.options[optionIndex];
+        this.options[optionIndex] = destinationActualOption;
+        this.refresh();
+    }
+    var mySuperSelect = new SuperSelect('#mySuperSelect');
+</script>
+{% endblock %}

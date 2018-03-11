@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>SuperSelect</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+        <link rel="stylesheet" type="text/css" href="./style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="py-5 text-center">
+                <h1>Exercice SuperSelect suite à notre entretien</h1>
+                <p>
+                    Bonjour Abdel et Pascal, voici le résultat de mon travail.<br> 
+                    Il reste quelques bugs ainsi que des tonnes d'améliorations possibles que je n'ai pas traités par manque de temps.<br>
+                    Pour travailler, je suis obligé de m'enfermer à clé et mon fils essaye d'ouvrir la porte et pleur pour me voir ce qui est assez perturbant... <br>
+                    J'ose imaginer toutefois que cela sera suffisant pour vous rassurer.<br>
+                    J'attends votre retour, qu'en pensez-vous ?<br>
+                    Gabriel
+                </p>
+            </div>
+            <p>À faire de plus important :</p>
+            <ul>
+                <li>débuger l'action ajouter</li>
+            </ul>
+            <p>J'ai pensais qu'il serait bien :</p>
+            <ul>
+                <li>d'ajouter une validation avec des regex + un trim pour l'action d'édition d'une option</li>
+                <li>de résoudre tous les bugs</li>
+                <li>d'ajouter une feature qui empèche l'apparition de doublons</li>
+                <li>d'ajouter un viewport</li>
+                <li>d'améliorer le CSS pour le rendre plus responsive et plus joli</li>
+            </ul>
+            <hr>
+            <div class="row">
+                <div id="mySuperSelect" class="col-md-12">
+                    <h2>SELECT</h2>
+                    <form>
+                        <label id="selectLabel" for="exampleFormControlSelect1">Aperçu du select</label>
+                        <hr>
+                        <p>Options</p>
+                        <a id="addAction" class="btn btn-outline-primary" href="#" role="button">Ajouter</a>
+                        <div id="editValues" class="row">
+                            <div class="col-sm-12 col-md-4 mb-3">
+                                <label for="optionValue">Value de votre option</label>
+                                <input type="text" class="form-control" id="optionValue" placeholder="" value="" required="">
+                                <div class="invalid-feedback">
+                                    Valid Option value is required.
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="optionText">Texte de votre option</label>
+                                <input type="text" class="form-control" id="optionText" placeholder="" value="" required="">
+                                <div class="invalid-feedback">
+                                    Valid Option text is required.
+                                </div>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="ok">Et validez</label>
+                                <input type="submit" class="form-control" id="ok" value="ok" required="">
+                                <div class="invalid-feedback">
+                                    Valid Option text is required.
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">value</th>
+                                <th scope="col">texte</th>
+                                <th scope="col">selected</th>
+                                <th scope="col">actions</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="super-select.js"></script>
+</html>
